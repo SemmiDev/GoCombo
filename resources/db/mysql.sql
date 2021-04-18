@@ -67,5 +67,14 @@ INSERT INTO kelurahan (id, id_kecamatan, nama, kodepos) VALUES ('tengah', 'cibin
 INSERT INTO kelurahan (id, id_kecamatan, nama, kodepos) VALUES ('pakansari', 'cibinong', 'Pakansari', '16915');
 INSERT INTO kelurahan (id, id_kecamatan, nama, kodepos) VALUES ('ciangsana', 'gnputri', 'Ciangsana', '16968');
 INSERT INTO kelurahan (id, id_kecamatan, nama, kodepos) VALUES ('cikeas', 'gnputri', 'Cikeas', '16966');
+INSERT INTO registrasi (id,email, password, nama, alamat, id_kelurahan) VALUES ('sammi', 'sammi@gmail.com','sammi','sammidev', 'lapau durian', 'pakansari');
 
-INSERT INTO registrasi (id,email, password, nama, alamat, id_kelurahan) VALUES ('testing', 'sammidev@gm.com','myPasswords','sammidev', 'lapau durian', 'tengah');
+SELECT registrasi.email as EMAIL,
+       kelurahan.nama as KELURAHAN,
+       kecamatan.nama as KECAMATAN,
+       kabupaten_kota.nama as KABUPATEN,
+       provinsi.nama as PROVINSI
+FROM registrasi JOIN kelurahan ON registrasi.id_kelurahan = kelurahan.id
+    JOIN kecamatan on kelurahan.id_kecamatan = kecamatan.id
+    JOIN kabupaten_kota on kecamatan.id_kabupaten_kota = kabupaten_kota.id
+    JOIN provinsi on kabupaten_kota.id_provinsi = provinsi.id;

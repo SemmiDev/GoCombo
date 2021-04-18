@@ -7,6 +7,7 @@ type Kelurahan struct {
 	KelurahanID string `json:"id"`
 	KecamatanID string `json:"id_kecamatan"`
 	Nama       	string `json:"nama"`
+	KodePos    string `json:"kodepos"`
 }
 
 // KelurahanRepository for repo

@@ -39,8 +39,9 @@ func (k *kelurahanRepo) GetByID(ID string) (res *models.Kelurahan, err error) {
 		var r models.Kelurahan
 		err = rows.Scan(
 			&r.KelurahanID,
-			&r.Nama,
 			&r.KecamatanID,
+			&r.Nama,
+			&r.KodePos,
 		)
 		if err != nil {
 			logger.Error("Selection Failed: " + err.Error())
@@ -69,8 +70,9 @@ func (k *kelurahanRepo) GetKelurahanByKecamatanID(ID string) (res []models.Kelur
 		var r models.Kelurahan
 		err = rows.Scan(
 			&r.KelurahanID,
-			&r.Nama,
 			&r.KecamatanID,
+			&r.Nama,
+			&r.KodePos,
 		)
 		if err != nil {
 			logger.Error("Selection Failed: " + err.Error())
@@ -99,13 +101,15 @@ func (k *kelurahanRepo) Store(ctx context.Context, kelurahan *models.Kelurahan) 
 	query := sq.Insert(KELURAHAN).
 		Columns(
 			"id",
-			"nama",
 			"id_kecamatan",
+			"nama",
+			"kodepos",
 		).
 		Values(
 			kelurahan.KelurahanID,
-			kelurahan.Nama,
 			kelurahan.KecamatanID,
+			kelurahan.Nama,
+			kelurahan.KodePos,
 		).
 		PlaceholderFormat(sq.Question)
 
@@ -131,8 +135,9 @@ func (k *kelurahanRepo) UpdateById(ctx context.Context, ID string, kelurahan *mo
 		}).
 		SetMap(map[string]interface{}{
 			"id": ID,
-			"nama": kelurahan.Nama,
 			"id_kecamatan": kelurahan.KecamatanID,
+			"nama": kelurahan.Nama,
+			"kodepos": kelurahan.KodePos,
 		}).
 		RunWith(k.Writer).PlaceholderFormat(sq.Question)
 	_, err := query.ExecContext(ctx)
@@ -159,8 +164,9 @@ func (k *kelurahanRepo) GetAll() (res []models.Kelurahan, err error) {
 		var r models.Kelurahan
 		err = rows.Scan(
 			&r.KelurahanID,
-			&r.Nama,
 			&r.KecamatanID,
+			&r.Nama,
+			&r.KodePos,
 		)
 
 		if err != nil {

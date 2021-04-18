@@ -80,20 +80,26 @@ func (s *Server) Start() {
 
 	r := new(mux.Router)
 
+	// REPO
 	registerRepo := repoMysql.NewRegistrasiRepo(s.Reader, s.Writer)
 	kabupatenRepo := repoMysql.NewKabupatenKotaRepo(s.Reader, s.Writer)
 	provinsiRepo := repoMysql.NewProvinsiRepo(s.Reader, s.Writer)
 	kecamatanRepo := repoMysql.NewKecamatanRepo(s.Reader, s.Writer)
+	kelurahanRepo := repoMysql.NewKelurahanRepo(s.Reader, s.Writer)
 
+	// REPO -> SERVICE
 	registerService := usecases.NewRegistrasiService(registerRepo)
 	kabupatenService := usecases.NewKabupatenKotaService(kabupatenRepo)
 	provinsiService := usecases.NewProvinsiService(provinsiRepo)
 	kecamatanService := usecases.NewKecamatanService(kecamatanRepo)
+	kelurahanService := usecases.NewKelurahanService(kelurahanRepo)
 
+	// SERVICE -> CONTROLLER
 	apis.NewRegistrasiController(r, registerService)
 	apis.NewKabupatenKotaController(r, kabupatenService)
 	apis.NewProvinsiController(r, provinsiService)
 	apis.NewKecamatanController(r, kecamatanService)
+	apis.NewKelurahanController(r, kelurahanService)
 
 	srv := &http.Server{
 		Handler:      r,

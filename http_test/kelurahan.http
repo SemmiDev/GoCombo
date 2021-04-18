@@ -1,0 +1,44 @@
+### GET ALL
+GET http://localhost:8000/kelurahan
+Accept: application/json
+
+### CREATE A
+POST http://localhost:8000/kelurahan
+Content-Type: application/json
+
+{
+  "id": "UMUMUM",
+  "id_kecamatan": "cibinong",
+  "nama": "humhum",
+  "kodepos": "16912"
+}
+
+### GET BY ID
+GET http://localhost:8000/kelurahan/UMUMUM
+Accept: application/json
+
+{
+  "id": "hahahahahahah",
+  "nama": "HAHAHAHAHAH",
+  "id_kabupaten": "kabbogor"
+}
+
+### DELETE BY ID
+DELETE http://localhost:8000/kelurahan/UMUMUM
+Accept: application/json
+
+### UPDATE BY ID
+PUT http://localhost:8000/kelurahan/UMUMUM
+Content-Type: application/json
+
+{
+  "id": "UMUMUM UP",
+  "id_kecamatan": "cibinong",
+  "nama": "humhum Up",
+  "kodepos": "169121"
+}
+
+###
+
+GET http://localhost:8000/kelurahan/kecamatan/cibinong
+Accept: application/json
