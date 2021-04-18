@@ -1,8 +1,8 @@
-### GET ALL CUSTOMERS
+### GET ALL
 GET http://localhost:8000/registrasi
 Accept: application/json
 
-### CREATE A CUSTOMER
+### CREATE A
 POST http://localhost:8000/registrasi
 Content-Type: application/json
 

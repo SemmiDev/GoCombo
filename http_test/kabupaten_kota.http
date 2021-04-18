@@ -1,8 +1,8 @@
-### GET ALL CUSTOMERS
+### GET ALL
 GET http://localhost:8000/kabupaten
 Accept: application/json
 
-### CREATE A CUSTOMER
+### CREATE A
 POST http://localhost:8000/kabupaten
 Content-Type: application/json
 

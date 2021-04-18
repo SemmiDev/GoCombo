@@ -1,0 +1,36 @@
+### GET ALL
+GET http://localhost:8000/kecamatan
+Accept: application/json
+
+### CREATE A
+POST http://localhost:8000/kecamatan
+Content-Type: application/json
+
+{
+  "id": "tal",
+  "nama": "Talamau",
+  "id_kabupaten": "kotabogor"
+}
+
+### GET BY ID
+GET http://localhost:8000/kecamatan/boobarat
+Accept: application/json
+
+### DELETE BY ID
+DELETE http://localhost:8000/kecamatan/mojosari
+Accept: application/json
+
+### UPDATE BY ID
+PUT http://localhost:8000/kecamatan/boobarat
+Content-Type: application/json
+
+{
+  "id": "hahahahahahah",
+  "nama": "HAHAHAHAHAH",
+  "id_kabupaten": "kabbogor"
+}
+
+###
+
+GET http://localhost:8000/kecamatan/kabupaten/kabbogor
+Accept: application/json

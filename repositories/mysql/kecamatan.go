@@ -130,7 +130,7 @@ func (k *kecamatanRepo) UpdateById(ctx context.Context, ID string, kecamatan *mo
 			"id": ID,
 		}).
 		SetMap(map[string]interface{}{
-			"id": ID,
+			"id": kecamatan.KecamatanID,
 			"nama": kecamatan.Nama,
 			"id_kabupaten_kota": kecamatan.KabupatenKotaID,
 		}).
@@ -159,8 +159,8 @@ func (k *kecamatanRepo) GetAll() (res []models.Kecamatan, err error) {
 		var r models.Kecamatan
 		err = rows.Scan(
 			&r.KecamatanID,
-			&r.Nama,
 			&r.KabupatenKotaID,
+			&r.Nama,
 		)
 
 		if err != nil {

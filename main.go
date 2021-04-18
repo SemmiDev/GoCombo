@@ -83,14 +83,17 @@ func (s *Server) Start() {
 	registerRepo := repoMysql.NewRegistrasiRepo(s.Reader, s.Writer)
 	kabupatenRepo := repoMysql.NewKabupatenKotaRepo(s.Reader, s.Writer)
 	provinsiRepo := repoMysql.NewProvinsiRepo(s.Reader, s.Writer)
+	kecamatanRepo := repoMysql.NewKecamatanRepo(s.Reader, s.Writer)
 
 	registerService := usecases.NewRegistrasiService(registerRepo)
 	kabupatenService := usecases.NewKabupatenKotaService(kabupatenRepo)
 	provinsiService := usecases.NewProvinsiService(provinsiRepo)
+	kecamatanService := usecases.NewKecamatanService(kecamatanRepo)
 
 	apis.NewRegistrasiController(r, registerService)
 	apis.NewKabupatenKotaController(r, kabupatenService)
 	apis.NewProvinsiController(r, provinsiService)
+	apis.NewKecamatanController(r, kecamatanService)
 
 	srv := &http.Server{
 		Handler:      r,
