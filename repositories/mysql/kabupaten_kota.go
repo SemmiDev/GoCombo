@@ -56,9 +56,8 @@ func (k *kabupatenKotaRepo) UpdateById(ctx context.Context, ID string, kabupaten
 			"id": ID,
 		}).
 		SetMap(map[string]interface{}{
-			"id": ID,
 			"nama": kabupatenKota.Nama,
-			"provinsi_id": kabupatenKota.ProvinsiID,
+			"id_provinsi": kabupatenKota.ProvinsiID,
 		}).
 		RunWith(k.Writer).PlaceholderFormat(sq.Question)
 	_, err := query.ExecContext(ctx)

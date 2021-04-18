@@ -1,0 +1,36 @@
+### GET ALL CUSTOMERS
+GET http://localhost:8000/kabupaten
+Accept: application/json
+
+### CREATE A CUSTOMER
+POST http://localhost:8000/kabupaten
+Content-Type: application/json
+
+{
+  "id": "btn",
+  "nama": "banten",
+  "id_provinsi": "jabar"
+}
+
+### GET BY ID
+GET http://localhost:8000/kabupaten/btn
+Accept: application/json
+
+### DELETE BY ID
+DELETE http://localhost:8000/kabupaten/btn
+Accept: application/json
+
+### UPDATE BY ID
+PUT http://localhost:8000/registrasi/mojokerto
+Content-Type: application/json
+
+{
+  "id": "mojokerto",
+  "id_provinsi": "dki",
+  "nama": "jatim"
+}
+
+###
+
+GET http://localhost:8000/kabupaten/provinsi/jatim
+Accept: application/json

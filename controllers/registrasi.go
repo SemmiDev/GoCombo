@@ -80,10 +80,10 @@ func (c registrasiController) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var response struct {
-		registerID string `json:"id_registrasi"`
+		RegisterID string `json:"id_registrasi"`
 	}
 
-	response.registerID = id
+	response.RegisterID = id
 
 	httpUtils.HandleJSONResponse(w, r, response)
 }
