@@ -97,7 +97,7 @@ func (p *provinsiRepo) UpdateById(ctx context.Context, ID string, provinsi *mode
 			"id": ID,
 		}).
 		SetMap(map[string]interface{}{
-			"id": ID,
+			"id":  provinsi.ProvinsiID,
 			"nama": provinsi.Nama,
 		}).
 		RunWith(p.Writer).PlaceholderFormat(sq.Question)

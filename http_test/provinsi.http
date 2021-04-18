@@ -1,0 +1,29 @@
+### GET ALL CUSTOMERS
+GET http://localhost:8000/provinsi
+Accept: application/json
+
+### CREATE A CUSTOMER
+POST http://localhost:8000/provinsi
+Content-Type: application/json
+
+{
+  "id": "SUMBAR",
+  "nama": "Sumatera Barat"
+}
+
+### GET BY ID
+GET http://localhost:8000/provinsi/SUMBAR
+Accept: application/json
+
+### DELETE BY ID
+DELETE http://localhost:8000/provinsi/SUMBAR
+Accept: application/json
+
+### UPDATE BY ID
+PUT http://localhost:8000/provinsi/SUMBAR
+Content-Type: application/json
+
+{
+  "id": "SUMUT",
+  "nama": "Sumatera Utara"
+}
