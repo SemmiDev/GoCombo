@@ -16,6 +16,11 @@ func NewKelurahanService(kr models.KelurahanRepository) models.KelurahanService 
 	}
 }
 
+func (p *KelurahanService) GetByKodePos(kodepos string) (res *models.Kelurahan, err error) {
+	res, err = p.KelurahanRepo.GetByKodePos(kodepos)
+	return
+}
+
 func (p *KelurahanService) GetKelurahanByKecamatanID(ID string) (res []models.Kelurahan, err error) {
 	res, err = p.KelurahanRepo.GetKelurahanByKecamatanID(ID)
 	return res, err

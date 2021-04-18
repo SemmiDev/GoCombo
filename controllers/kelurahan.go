@@ -22,10 +22,37 @@ func NewKelurahanController(r *mux.Router, cuc models.KelurahanService) {
 	r.HandleFunc("/kelurahan", kelurahanController.GetAll).Methods("GET")
 	r.HandleFunc("/kelurahan", kelurahanController.Create).Methods("POST")
 	r.HandleFunc("/kelurahan/{id_kelurahan}", kelurahanController.GetByID).Methods("GET")
+	r.HandleFunc("/kelurahan/kodepos/{kodepos}", kelurahanController.GetByKodePos).Methods("GET")
 	r.HandleFunc("/kelurahan/kecamatan/{id_kecamatan}", kelurahanController.GetKelurahanByKecamatanID).Methods("GET")
 	r.HandleFunc("/kelurahan/{id_kelurahan}", kelurahanController.UpdateByID).Methods("PUT")
 	r.HandleFunc("/kelurahan/{id_kelurahan}", kelurahanController.DeleteByID).Methods("DELETE")
 }
+
+
+func (c kelurahanController) GetByKodePos(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	kodepos := params["kodepos"]
+	result, err := c.kelurahanService.GetByKodePos(kodepos)
+
+	if err != nil {
+		httpUtils.HandleError(
+			w,
+			r,
+			err,
+			"failed to get kelurahan by kode pos",
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	var data struct {
+		Data *models.Kelurahan `json:"data"`
+	}
+
+	data.Data = result
+	httpUtils.HandleJSONResponse(w, r, data)
+}
+
 
 func (c kelurahanController) GetAll(w http.ResponseWriter, r *http.Request) {
 	result, err := c.kelurahanService.GetAll()
