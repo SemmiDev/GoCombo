@@ -16,6 +16,11 @@ func NewKelurahanService(kr models.KelurahanRepository) models.KelurahanService 
 	}
 }
 
+func (p *KelurahanService) Joining(ctx context.Context) (res []models.Joining, err error) {
+	res, err = p.KelurahanRepo.Joining(ctx)
+	return
+}
+
 func (p *KelurahanService) GetByKodePos(kodepos string) (res *models.Kelurahan, err error) {
 	res, err = p.KelurahanRepo.GetByKodePos(kodepos)
 	return

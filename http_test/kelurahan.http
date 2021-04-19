@@ -42,3 +42,7 @@ Content-Type: application/json
 
 GET http://localhost:8000/kelurahan/kecamatan/cibinong
 Accept: application/json
+
+###
+GET http://localhost:8000/join
+Accept: application/json

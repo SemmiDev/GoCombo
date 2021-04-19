@@ -28,6 +28,7 @@ type Server struct {
 func main() {
 	reader, writer := configureMySQL()
 	serverReady := make(chan bool)
+
 	server := Server{
 		Reader:      reader,
 		Writer:      writer,

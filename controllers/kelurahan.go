@@ -26,8 +26,8 @@ func NewKelurahanController(r *mux.Router, cuc models.KelurahanService) {
 	r.HandleFunc("/kelurahan/kecamatan/{id_kecamatan}", kelurahanController.GetKelurahanByKecamatanID).Methods("GET")
 	r.HandleFunc("/kelurahan/{id_kelurahan}", kelurahanController.UpdateByID).Methods("PUT")
 	r.HandleFunc("/kelurahan/{id_kelurahan}", kelurahanController.DeleteByID).Methods("DELETE")
+	r.HandleFunc("/join", kelurahanController.joining).Methods("GET")
 }
-
 
 func (c kelurahanController) GetByKodePos(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -213,4 +213,21 @@ func (c kelurahanController) DeleteByID(w http.ResponseWriter, r *http.Request) 
 	}
 
 	httpUtils.HandleNoJSONResponse(w)
+}
+
+func (c kelurahanController) joining(w http.ResponseWriter, r *http.Request) {
+
+	res, err := c.kelurahanService.Joining(context.TODO())
+	if err != nil {
+		httpUtils.HandleError(
+			w,
+			r,
+			err,
+			"failed to joining",
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	httpUtils.HandleJSONResponse(w,r,res)
 }

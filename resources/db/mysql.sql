@@ -71,6 +71,7 @@ INSERT INTO registrasi (id,email, password, nama, alamat, id_kelurahan) VALUES (
 
 SELECT registrasi.email as EMAIL,
        kelurahan.nama as KELURAHAN,
+       kelurahan.kodepos as KODEPOS,
        kecamatan.nama as KECAMATAN,
        kabupaten_kota.nama as KABUPATEN,
        provinsi.nama as PROVINSI

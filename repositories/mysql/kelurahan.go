@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	sq "github.com/Masterminds/squirrel"
 	logger "github.com/sirupsen/logrus"
+	"log"
 )
 
 type kelurahanRepo struct {
@@ -82,6 +83,7 @@ func (k *kelurahanRepo) GetByID(ID string) (res *models.Kelurahan, err error) {
 }
 
 func (k *kelurahanRepo) GetKelurahanByKecamatanID(ID string) (res []models.Kelurahan, err error) {
+
 	query := sq.Select("*").
 		From(KELURAHAN).
 		Where(sq.Eq{
@@ -197,6 +199,45 @@ func (k *kelurahanRepo) GetAll() (res []models.Kelurahan, err error) {
 			&r.KecamatanID,
 			&r.Nama,
 			&r.KodePos,
+		)
+
+		if err != nil {
+			logger.Error("Selection Failed: " + err.Error())
+		}
+		res = append(res, r)
+	}
+	return
+}
+
+func (r *kelurahanRepo) Joining(ctx context.Context) (res []models.Joining, err error) {
+
+	rows, err := r.Reader.QueryContext(ctx, "" +
+		"SELECT registrasi.email as EMAIL," +
+		"\nkelurahan.nama," +
+		"\n kelurahan.kodepos," +
+		"\n kecamatan.nama," +
+		"\n kabupaten_kota.nama," +
+		"\n provinsi.nama" +
+		"\n FROM registrasi JOIN kelurahan ON registrasi.id_kelurahan = kelurahan.id" +
+		"\n JOIN kecamatan on kelurahan.id_kecamatan = kecamatan.id" +
+		"\n JOIN kabupaten_kota on kecamatan.id_kabupaten_kota = kabupaten_kota.id" +
+		"\n JOIN provinsi on kabupaten_kota.id_provinsi = provinsi.id")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var r models.Joining
+		err = rows.Scan(
+			&r.Email,
+			&r.Kelurahan,
+			&r.KodePos,
+			&r.Kecamatan,
+			&r.Kabupaten,
+			&r.Provinsi,
 		)
 
 		if err != nil {

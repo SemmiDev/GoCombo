@@ -19,6 +19,7 @@ type KelurahanRepository interface {
 	DeleteByID(ctx context.Context, ID string) error
 	Store(ctx context.Context, kelurahan *Kelurahan) (string, error)
 	UpdateById(ctx context.Context, ID string, kelurahan *Kelurahan) error
+	Joining(ctx context.Context) ([]Joining, error)
 }
 
 // KelurahanService for service
@@ -30,4 +31,5 @@ type KelurahanService interface {
 	DeleteByID(ctx context.Context, ID string) error
 	CreateKelurahan(ctx context.Context, kelurahan *Kelurahan) (string, error)
 	UpdateKelurahan(ctx context.Context, ID string, kelurahan *Kelurahan) error
+	Joining(ctx context.Context) ([]Joining, error)
 }
