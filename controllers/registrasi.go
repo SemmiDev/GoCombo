@@ -88,7 +88,7 @@ func (c registrasiController) Create(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, response)
 }
 
-func (c registrasiController) GetByID(w http.ResponseWriter, r *http.Request) {
+func (c *registrasiController) GetByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	registrasiID := params["id_registrasi"]
 	result, err := c.registrasiService.GetByID(registrasiID)
@@ -112,7 +112,7 @@ func (c registrasiController) GetByID(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c registrasiController) GetByKelurahanID(w http.ResponseWriter, r *http.Request) {
+func (c *registrasiController) GetByKelurahanID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kelurahanID := params["id_kelurahan"]
 
@@ -137,7 +137,7 @@ func (c registrasiController) GetByKelurahanID(w http.ResponseWriter, r *http.Re
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c registrasiController) UpdateByID(w http.ResponseWriter, r *http.Request) {
+func (c *registrasiController) UpdateByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	registrasiID := params["id_registrasi"]
 
@@ -181,7 +181,7 @@ func (c registrasiController) UpdateByID(w http.ResponseWriter, r *http.Request)
 	httpUtils.HandleJSONResponse(w, r, err)
 }
 
-func (c registrasiController) DeleteByID(w http.ResponseWriter, r *http.Request) {
+func (c *registrasiController) DeleteByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	registrasiID := params["id_registrasi"]
 

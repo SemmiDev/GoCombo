@@ -6,17 +6,22 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	uuid "github.com/satori/go.uuid"
+	"html/template"
+	"log"
 	"net/http"
 )
 
 type kelurahanController struct {
 	kelurahanService models.KelurahanService
+	registrasiService models.RegistrasiService
 }
 
 // NewKelurahanController will initiate new api
-func NewKelurahanController(r *mux.Router, cuc models.KelurahanService) {
+func NewKelurahanController(r *mux.Router, ks models.KelurahanService, rs models.RegistrasiService) {
 	kelurahanController := &kelurahanController{
-		kelurahanService: cuc,
+		kelurahanService: ks,
+		registrasiService: rs,
 	}
 
 	r.HandleFunc("/kelurahan", kelurahanController.GetAll).Methods("GET")
@@ -27,9 +32,46 @@ func NewKelurahanController(r *mux.Router, cuc models.KelurahanService) {
 	r.HandleFunc("/kelurahan/{id_kelurahan}", kelurahanController.UpdateByID).Methods("PUT")
 	r.HandleFunc("/kelurahan/{id_kelurahan}", kelurahanController.DeleteByID).Methods("DELETE")
 	r.HandleFunc("/join", kelurahanController.joining).Methods("GET")
+
+	r.HandleFunc("/register", kelurahanController.ShowDataKelurahan)
+	r.HandleFunc("/insertRegister", kelurahanController.InsertRegister)
+	r.HandleFunc("/home", kelurahanController.Home)
 }
 
-func (c kelurahanController) GetByKodePos(w http.ResponseWriter, r *http.Request) {
+var templateHtml = template.Must(template.ParseGlob("templates/kelurahan/*"))
+
+func (c *kelurahanController) ShowDataKelurahan(w http.ResponseWriter, r *http.Request) {
+	result, _ := c.kelurahanService.GetAll()
+	_ = templateHtml.ExecuteTemplate(w, "Registration", result)
+}
+
+func (c kelurahanController) Home(w http.ResponseWriter, r *http.Request) {
+	registers, _ := c.registrasiService.GetAll()
+	_ = templateHtml.ExecuteTemplate(w, "View", registers)
+}
+
+func (c *kelurahanController) InsertRegister(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+	result := r.Form["kelurahanchoice"]
+	namaKelurahan := result[0]
+	kelurahanByID, _ := c.kelurahanService.GetByName(namaKelurahan)
+
+	log.Println(kelurahanByID)
+	var register models.Registrasi
+
+	register.RegistrasiID = uuid.NewV4().String()
+	register.Nama = r.FormValue("fullname")
+	register.Email = r.FormValue("email")
+	register.Password = r.FormValue("password")
+	register.Alamat = r.FormValue("address")
+	register.KelurahanID = kelurahanByID
+
+	_, _ = c.registrasiService.CreateRegistrasi(context.TODO(), &register)
+	registers, _ := c.registrasiService.GetAll()
+	_ = templateHtml.ExecuteTemplate(w, "View", registers)
+}
+
+func (c *kelurahanController) GetByKodePos(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kodepos := params["kodepos"]
 	result, err := c.kelurahanService.GetByKodePos(kodepos)
@@ -53,8 +95,7 @@ func (c kelurahanController) GetByKodePos(w http.ResponseWriter, r *http.Request
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-
-func (c kelurahanController) GetAll(w http.ResponseWriter, r *http.Request) {
+func (c *kelurahanController) GetAll(w http.ResponseWriter, r *http.Request) {
 	result, err := c.kelurahanService.GetAll()
 	if err != nil {
 		httpUtils.HandleError(
@@ -74,7 +115,7 @@ func (c kelurahanController) GetAll(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c kelurahanController) Create(w http.ResponseWriter, r *http.Request) {
+func (c *kelurahanController) Create(w http.ResponseWriter, r *http.Request) {
 	var body struct {
 		ID       		string `json:"id"`
 		Kecamatan   	string `json:"id_kecamatan"`
@@ -83,7 +124,7 @@ func (c kelurahanController) Create(w http.ResponseWriter, r *http.Request) {
 
 	}
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		httpUtils.HandleError(w, r, err, "bad request body", http.StatusBadRequest)
+		httpUtils.HandleError(w, r, err, "bad r body", http.StatusBadRequest)
 	}
 
 	defer r.Body.Close()
@@ -109,7 +150,7 @@ func (c kelurahanController) Create(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, response)
 }
 
-func (c kelurahanController) GetByID(w http.ResponseWriter, r *http.Request) {
+func (c *kelurahanController) GetByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kelurahanID := params["id_kelurahan"]
 	result, err := c.kelurahanService.GetByID(kelurahanID)
@@ -133,7 +174,7 @@ func (c kelurahanController) GetByID(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c kelurahanController) GetKelurahanByKecamatanID(w http.ResponseWriter, r *http.Request) {
+func (c *kelurahanController) GetKelurahanByKecamatanID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kecamatanID := params["id_kecamatan"]
 
@@ -157,7 +198,7 @@ func (c kelurahanController) GetKelurahanByKecamatanID(w http.ResponseWriter, r 
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c kelurahanController) UpdateByID(w http.ResponseWriter, r *http.Request) {
+func (c *kelurahanController) UpdateByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kelurahanID := params["id_kelurahan"]
 
@@ -169,7 +210,7 @@ func (c kelurahanController) UpdateByID(w http.ResponseWriter, r *http.Request) 
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		httpUtils.HandleError(w, r, err, "bad request body", http.StatusBadRequest)
+		httpUtils.HandleError(w, r, err, "bad r body", http.StatusBadRequest)
 	}
 	defer r.Body.Close()
 
@@ -196,7 +237,7 @@ func (c kelurahanController) UpdateByID(w http.ResponseWriter, r *http.Request) 
 	httpUtils.HandleJSONResponse(w, r, err)
 }
 
-func (c kelurahanController) DeleteByID(w http.ResponseWriter, r *http.Request) {
+func (c *kelurahanController) DeleteByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kelurahanID := params["id_kelurahan"]
 
@@ -215,7 +256,7 @@ func (c kelurahanController) DeleteByID(w http.ResponseWriter, r *http.Request) 
 	httpUtils.HandleNoJSONResponse(w)
 }
 
-func (c kelurahanController) joining(w http.ResponseWriter, r *http.Request) {
+func (c *kelurahanController) joining(w http.ResponseWriter, r *http.Request) {
 
 	res, err := c.kelurahanService.Joining(context.TODO())
 	if err != nil {

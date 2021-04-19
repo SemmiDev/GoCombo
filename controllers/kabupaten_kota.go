@@ -28,7 +28,7 @@ func NewKabupatenKotaController(r *mux.Router, cuc models.KabupatenKotaService) 
 }
 
 
-func (c kabupatenKotaController) GetAll(w http.ResponseWriter, r *http.Request) {
+func (c *kabupatenKotaController) GetAll(w http.ResponseWriter, r *http.Request) {
 	result, err := c.kabupatenKotaService.GetAll()
 	if err != nil {
 		httpUtils.HandleError(
@@ -48,7 +48,7 @@ func (c kabupatenKotaController) GetAll(w http.ResponseWriter, r *http.Request) 
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c kabupatenKotaController) Create(w http.ResponseWriter, r *http.Request) {
+func (c *kabupatenKotaController) Create(w http.ResponseWriter, r *http.Request) {
 	var body struct {
 		ID       		string `json:"id"`
 		Nama       		string `json:"nama"`
@@ -81,7 +81,7 @@ func (c kabupatenKotaController) Create(w http.ResponseWriter, r *http.Request) 
 	httpUtils.HandleJSONResponse(w, r, response)
 }
 
-func (c kabupatenKotaController) GetByID(w http.ResponseWriter, r *http.Request) {
+func (c *kabupatenKotaController) GetByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kabupatenID := params["id_kabupaten"]
 	result, err := c.kabupatenKotaService.GetByID(kabupatenID)
@@ -105,7 +105,7 @@ func (c kabupatenKotaController) GetByID(w http.ResponseWriter, r *http.Request)
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c kabupatenKotaController) GetByProvinsiID(w http.ResponseWriter, r *http.Request) {
+func (c *kabupatenKotaController) GetByProvinsiID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	provinsiID := params["id_provinsi"]
 
@@ -129,7 +129,7 @@ func (c kabupatenKotaController) GetByProvinsiID(w http.ResponseWriter, r *http.
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c kabupatenKotaController) UpdateByID(w http.ResponseWriter, r *http.Request) {
+func (c *kabupatenKotaController) UpdateByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kabupatenID := params["id_kabupaten"]
 
@@ -165,7 +165,7 @@ func (c kabupatenKotaController) UpdateByID(w http.ResponseWriter, r *http.Reque
 	httpUtils.HandleJSONResponse(w, r, err)
 }
 
-func (c kabupatenKotaController) DeleteByID(w http.ResponseWriter, r *http.Request) {
+func (c *kabupatenKotaController) DeleteByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kabupatenID := params["id_kabupaten"]
 

@@ -100,7 +100,7 @@ func (s *Server) Start() {
 	apis.NewKabupatenKotaController(r, kabupatenService)
 	apis.NewProvinsiController(r, provinsiService)
 	apis.NewKecamatanController(r, kecamatanService)
-	apis.NewKelurahanController(r, kelurahanService)
+	apis.NewKelurahanController(r, kelurahanService, registerService)
 
 	srv := &http.Server{
 		Handler:      r,

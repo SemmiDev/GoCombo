@@ -27,7 +27,7 @@ func NewKecamatanController(r *mux.Router, cuc models.KecamatanService) {
 	r.HandleFunc("/kecamatan/{id_kecamatan}", kecamatanController.DeleteByID).Methods("DELETE")
 }
 
-func (c kecamatanController) GetAll(w http.ResponseWriter, r *http.Request) {
+func (c *kecamatanController) GetAll(w http.ResponseWriter, r *http.Request) {
 	result, err := c.kecamatanService.GetAll()
 	if err != nil {
 		httpUtils.HandleError(
@@ -47,7 +47,7 @@ func (c kecamatanController) GetAll(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c kecamatanController) Create(w http.ResponseWriter, r *http.Request) {
+func (c *kecamatanController) Create(w http.ResponseWriter, r *http.Request) {
 	var body struct {
 		ID       		string `json:"id"`
 		Nama       		string `json:"nama"`
@@ -80,7 +80,7 @@ func (c kecamatanController) Create(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, response)
 }
 
-func (c kecamatanController) GetByID(w http.ResponseWriter, r *http.Request) {
+func (c *kecamatanController) GetByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kecamatanID := params["id_kecamatan"]
 	result, err := c.kecamatanService.GetByID(kecamatanID)
@@ -104,7 +104,7 @@ func (c kecamatanController) GetByID(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c kecamatanController) GetByKabupatenID(w http.ResponseWriter, r *http.Request) {
+func (c *kecamatanController) GetByKabupatenID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kabupatenID := params["id_kabupaten"]
 
@@ -128,7 +128,7 @@ func (c kecamatanController) GetByKabupatenID(w http.ResponseWriter, r *http.Req
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c kecamatanController) UpdateByID(w http.ResponseWriter, r *http.Request) {
+func (c *kecamatanController) UpdateByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kecamatanID := params["id_kecamatan"]
 
@@ -165,7 +165,7 @@ func (c kecamatanController) UpdateByID(w http.ResponseWriter, r *http.Request) 
 	httpUtils.HandleJSONResponse(w, r, err)
 }
 
-func (c kecamatanController) DeleteByID(w http.ResponseWriter, r *http.Request) {
+func (c *kecamatanController) DeleteByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	kecamatanID := params["id_kecamatan"]
 

@@ -27,7 +27,7 @@ func NewProvinsiController(r *mux.Router, cuc models.ProvinsiService) {
 }
 
 
-func (c provinsiController) GetAll(w http.ResponseWriter, r *http.Request) {
+func (c *provinsiController) GetAll(w http.ResponseWriter, r *http.Request) {
 	result, err := c.provinsiService.GetAll()
 	if err != nil {
 		httpUtils.HandleError(
@@ -47,7 +47,7 @@ func (c provinsiController) GetAll(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c provinsiController) Create(w http.ResponseWriter, r *http.Request) {
+func (c *provinsiController) Create(w http.ResponseWriter, r *http.Request) {
 	var body struct {
 		ID       		string `json:"id"`
 		Nama       		string `json:"nama"`
@@ -78,7 +78,7 @@ func (c provinsiController) Create(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, response)
 }
 
-func (c provinsiController) GetByID(w http.ResponseWriter, r *http.Request) {
+func (c *provinsiController) GetByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	provinsiID := params["id_provinsi"]
 	result, err := c.provinsiService.GetByID(provinsiID)
@@ -102,7 +102,7 @@ func (c provinsiController) GetByID(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, data)
 }
 
-func (c provinsiController) UpdateByID(w http.ResponseWriter, r *http.Request) {
+func (c *provinsiController) UpdateByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	provinsiID := params["id_provinsi"]
 
@@ -137,7 +137,7 @@ func (c provinsiController) UpdateByID(w http.ResponseWriter, r *http.Request) {
 	httpUtils.HandleJSONResponse(w, r, err)
 }
 
-func (c provinsiController) DeleteByID(w http.ResponseWriter, r *http.Request) {
+func (c *provinsiController) DeleteByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	provinsiID := params["id_provinsi"]
 

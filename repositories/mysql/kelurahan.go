@@ -22,6 +22,34 @@ func NewKelurahanRepo(reader, writer *sql.DB) models.KelurahanRepository {
 	}
 }
 
+func (k *kelurahanRepo) GetByName(name string) (ID string, err error) {
+	query := sq.Select("id").
+		From(KELURAHAN).
+		Where(sq.Eq{
+			"nama": name,
+		}).
+		RunWith(k.Reader).
+		PlaceholderFormat(sq.Question)
+
+	rows, err := query.Query()
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		var id string
+		err = rows.Scan(
+			&id,
+		)
+		if err != nil {
+			logger.Error("Selection Failed: " + err.Error())
+		}
+		ID = id
+	}
+	return
+}
+
 func (k *kelurahanRepo) GetByKodePos(kodepos string) (res *models.Kelurahan, err error) {
 	query := sq.Select("*").
 		From(KELURAHAN).

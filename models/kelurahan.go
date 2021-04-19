@@ -15,6 +15,7 @@ type KelurahanRepository interface {
 	GetAll() ([]Kelurahan, error)
 	GetByID(ID string) (*Kelurahan, error)
 	GetByKodePos(kodepos string) (*Kelurahan, error)
+	GetByName(name string) (string, error)
 	GetKelurahanByKecamatanID(ID string) ([]Kelurahan,error)
 	DeleteByID(ctx context.Context, ID string) error
 	Store(ctx context.Context, kelurahan *Kelurahan) (string, error)
@@ -27,6 +28,7 @@ type KelurahanService interface {
 	GetAll() ([]Kelurahan, error)
 	GetByID(ID string) (*Kelurahan, error)
 	GetByKodePos(kodepos string) (*Kelurahan, error)
+	GetByName(name string) (string, error)
 	GetKelurahanByKecamatanID(ID string) ([]Kelurahan,error)
 	DeleteByID(ctx context.Context, ID string) error
 	CreateKelurahan(ctx context.Context, kelurahan *Kelurahan) (string, error)

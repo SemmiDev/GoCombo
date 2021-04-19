@@ -1,0 +1,47 @@
+{{ define "View" }}
+    {{ template "Header" }}
+    {{ template "Menu" }}
+
+    <div class="container-lg">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-8"><h2>Registers <b>Management</b></h2></div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i><a href="/register" style="text-decoration: none; color: white">Register</a></button>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Kelurahan</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{ if . }}
+                        {{ range . }}
+                            <tr>
+                                <td>{{ .Email }}</td>
+                                <td>{{ .Nama }}</td>
+                                <td>{{ .Alamat }}</td>
+                                <td>{{ .KelurahanID }}</td>
+                                <td>
+                                    <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                                    <a class="edit" title="Show" href="/registerDetails?id={{.RegistrasiID}}" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                    <a class="delete" title="Delete" href="/deleteRegister?id={{.RegistrasiID}}" data-toggle="tooltip" onclick="return confirm('Are u sure you want to delete?');"><i class="material-icons">&#xE872;</i></a>
+                                </td>
+                            </tr>
+                        {{ end }}
+                    {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{{end}}
