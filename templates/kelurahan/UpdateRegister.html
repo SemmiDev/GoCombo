@@ -1,11 +1,10 @@
-{{ define "CreateCustomer" }}
+{{ define "UpdateRegister" }}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create Customer</title>
     <style>
         .form-valid  {
             opacity:0.5;
@@ -24,44 +23,47 @@
 <body>
 <div class="container my-5">
     <div class="card bg-light">
-        <form class="card-body" novalidate="" action="/insertCustomer" method="post" id="bootstrapForm">
+        <form class="card-body" novalidate="" action="/register/alter" method="post" id="bootstrapForm">
+            <input type="hidden" name="id" value="{{ .RegistrasiID }}" />
 
             <div class="form-group">
-                <label class="h4 form-control-label" for="input1">Full Name<abbr class="text-danger" title="This is required">*</abbr></label>
-                <input type="text" class="form-control" name="fullname" id="input1" required>
+                <label class="h4 form-control-label" for="input1">Name<abbr class="text-danger" title="This is required"></abbr></label>
+                <input type="text" class="form-control" name="fullname" value="{{ .Nama }}" id="input1" required>
                 <div class="valid-feedback">nama yang bagus</div>
                 <div class="invalid-feedback">Please enter your fullname. This field is required</div>
             </div>
 
             <div class="form-group">
-                <label class="h4 form-control-label" for="input2">Email<abbr class="text-danger" title="This is required">*</abbr></label>
-                <input type="email" class="form-control" name="email" id="input2" required>
+                <label class="h4 form-control-label" for="input2">Email<abbr class="text-danger" title="This is required"></abbr></label>
+                <input type="email" class="form-control" name="email" value="{{ .Email }}" id="input2" required>
                 <div class="valid-feedback">email nya bagus</div>
                 <div class="invalid-feedback">Please enter your valid email. This field is required</div>
             </div>
 
             <div class="form-group">
-                <label class="h4 form-control-label" for="input3">Phone<abbr class="text-danger" title="This is required">*</abbr></label>
-                <input type="text" placeholder="08xxxxxxxxx" class="form-control" name="phonenumber" id="input3" required>
-            </div>
-
-            <div class="form-group">
-                <label class="h4 form-control-label" for="input4">Username<abbr class="text-danger" title="This is required">*</abbr></label>
-                <input type="text" class="form-control" name="username" id="input4" required>
+                <label class="h4 form-control-label" for="input3">Password<abbr class="text-danger" title="This is required"></abbr></label>
+                <input type="password" class="form-control" name="password" value="{{ .Password }}"  id="input3" required>
                 <div class="valid-feedback">Yosh mantap</div>
                 <div class="invalid-feedback">Please enter your fullname. This field is required</div>
             </div>
 
             <div class="form-group">
-                <label class="h4 form-control-label" for="input5">Password<abbr class="text-danger" title="This is required">*</abbr></label>
-                <input type="password" class="form-control" name="password" id="input5" required>
-                <div class="valid-feedback">Yosh mantap</div>
-                <div class="invalid-feedback">Please enter your fullname. This field is required</div>
+                <label class="h4 form-control-label" for="input4">Address<abbr class="text-danger" title="This is required"></abbr></label>
+                <input type="text" class="form-control" name="address" value="{{ .Alamat }}" id="input4" required>
+                <div class="valid-feedback">Ooo kata sane ya Address nya</div>
+                <div class="invalid-feedback">Please enter your address. This field is required</div>
             </div>
 
+            <div class="form-group">
+                <select class="form-select" name="kelurahanchoice" aria-label="Default select example">
+                    {{range $element := .NamaKelurahan}} {{$element}}
+                            <option value="{{ $element }}">{{ $element }}</option>
+                    {{end}}
+                </select>
+            </div>
 
             <div>
-                <button type="submit" class="btn btn-secondary">Create Customer</button>
+                <button type="submit" class="btn btn-secondary">Update Register</button>
             </div>
 
         </form>
@@ -74,7 +76,7 @@
     $("#bootstrapForm").submit(function(event) {
 
         // make selected form variable
-        var vForm = $(this);
+        let vForm = $(this);
 
         /*
         If not valid prevent form submit

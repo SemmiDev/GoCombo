@@ -35,14 +35,80 @@ func NewKelurahanController(r *mux.Router, ks models.KelurahanService, rs models
 
 	r.HandleFunc("/register", kelurahanController.ShowDataKelurahan)
 	r.HandleFunc("/insertRegister", kelurahanController.InsertRegister)
+	r.HandleFunc("/registerDetails", kelurahanController.RegisterDetails)
 	r.HandleFunc("/home", kelurahanController.Home)
+	r.HandleFunc("/deleteRegister", kelurahanController.DeleteRegister)
+	r.HandleFunc("/register/alter", kelurahanController.AlterRegister)
+	r.HandleFunc("/updateRegister", kelurahanController.UpdateRegister)
 }
 
 var templateHtml = template.Must(template.ParseGlob("templates/kelurahan/*"))
 
+
+func (c *kelurahanController) AlterRegister(w http.ResponseWriter, r *http.Request) {
+	var register models.Registrasi
+	ID := r.FormValue("id")
+
+	_ = r.ParseForm()
+	result := r.Form["kelurahanchoice"]
+	namaKelurahan := result[0]
+	kelurahanByID, _ := c.kelurahanService.GetByName(namaKelurahan)
+
+	register.Nama = r.FormValue("fullname")
+	register.Email = r.FormValue("email")
+	register.Password = r.FormValue("password")
+	register.Alamat = r.FormValue("address")
+	register.KelurahanID = kelurahanByID
+
+
+	_ = c.registrasiService.UpdateRegistrasi(context.TODO(), ID, &register)
+	data, _ := c.registrasiService.GetAll()
+	_ = templateHtml.ExecuteTemplate(w, "View", data)
+}
+
+func (c *kelurahanController) UpdateRegister(w http.ResponseWriter, r *http.Request) {
+	ID := r.FormValue("id")
+	kelurahanList, _ := c.kelurahanService.GetAll()
+
+	var namaKelurahan []string
+	register, _ := c.registrasiService.GetByID(ID)
+
+	for _, value := range kelurahanList{
+		namaKelurahan = append(namaKelurahan, value.Nama)
+	}
+
+	_ = templateHtml.ExecuteTemplate(w, "UpdateRegister", models.UpdateRegister{
+		RegistrasiID:  ID,
+		Email:         register.Email,
+		Password:      register.Password,
+		Nama:          register.Nama,
+		Alamat:        register.Alamat,
+		NamaKelurahan: namaKelurahan,
+	})
+}
+
 func (c *kelurahanController) ShowDataKelurahan(w http.ResponseWriter, r *http.Request) {
 	result, _ := c.kelurahanService.GetAll()
 	_ = templateHtml.ExecuteTemplate(w, "Registration", result)
+}
+
+func (c kelurahanController) RegisterDetails(w http.ResponseWriter, r *http.Request) {
+	registerEmail := r.FormValue("email")
+	var registerDetails []models.Joining
+	registerDetails, _ = c.kelurahanService.Joining(context.TODO())
+	for i := 0; i < len(registerDetails); i++ {
+		if registerDetails[i].Email ==  registerEmail{
+			log.Println(registerDetails[i].ID + " GOT")
+			_ = templateHtml.ExecuteTemplate(w, "RegisterDetails", registerDetails[i])
+		}
+	}
+}
+
+func (c *kelurahanController) DeleteRegister(w http.ResponseWriter, r *http.Request) {
+	registerID := r.FormValue("id")
+	_ = c.registrasiService.DeleteByID(context.TODO(), registerID)
+	result, _ := c.registrasiService.GetAll()
+	_ = templateHtml.ExecuteTemplate(w, "View", result)
 }
 
 func (c kelurahanController) Home(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +122,6 @@ func (c *kelurahanController) InsertRegister(w http.ResponseWriter, r *http.Requ
 	namaKelurahan := result[0]
 	kelurahanByID, _ := c.kelurahanService.GetByName(namaKelurahan)
 
-	log.Println(kelurahanByID)
 	var register models.Registrasi
 
 	register.RegistrasiID = uuid.NewV4().String()

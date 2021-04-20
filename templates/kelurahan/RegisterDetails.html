@@ -1,0 +1,42 @@
+{{ define "RegisterDetails" }}
+    {{ template "HeaderDetails" }}
+    {{ template "Menu" }}
+
+    <div class="container-lg">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-8"><h2>Details <b> {{ .Name }}</b></h2></div>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Kelurahan</th>
+                        <th>Kode Pos</th>
+                        <th>Kecamatan</th>
+                        <th>Kabupaten</th>
+                        <th>Provinsi</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ .Email }}</td>
+                        <td>{{ .Address }}</td>
+                        <td>{{ .Kelurahan }}</td>
+                        <td>{{ .KodePos }}</td>
+                        <td>{{ .Kecamatan }}</td>
+                        <td>{{ .Kabupaten }}</td>
+                        <td>{{ .Provinsi }}</td>
+                        <td><a href="/updateRegister?id={{.ID}}">Update</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{{end}}

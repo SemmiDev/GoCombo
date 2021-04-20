@@ -16,9 +16,7 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Email</th>
                         <th>Name</th>
-                        <th>Address</th>
                         <th>Kelurahan</th>
                         <th>Actions</th>
                     </tr>
@@ -27,14 +25,12 @@
                     {{ if . }}
                         {{ range . }}
                             <tr>
-                                <td>{{ .Email }}</td>
                                 <td>{{ .Nama }}</td>
-                                <td>{{ .Alamat }}</td>
                                 <td>{{ .KelurahanID }}</td>
                                 <td>
                                     <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                                    <a class="edit" title="Show" href="/registerDetails?id={{.RegistrasiID}}" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                    <a class="delete" title="Delete" href="/deleteRegister?id={{.RegistrasiID}}" data-toggle="tooltip" onclick="return confirm('Are u sure you want to delete?');"><i class="material-icons">&#xE872;</i></a>
+                                    <a class="edit" title="Show" href="/registerDetails?email={{ .Email }}" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                    <a class="delete" title="Delete" href="/deleteRegister?id={{ .RegistrasiID }}" data-toggle="tooltip" onclick="return confirm('Are u sure you want to delete?');"><i class="material-icons">&#xE872;</i></a>
                                 </td>
                             </tr>
                         {{ end }}

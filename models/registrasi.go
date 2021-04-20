@@ -12,6 +12,15 @@ type Registrasi struct {
 	KelurahanID 	string `json:"id_kelurahan"`
 }
 
+type UpdateRegister struct {
+	RegistrasiID 	string `json:"id"`
+	Email			string `json:"email"`
+	Password		string `json:"password"`
+	Nama       		string `json:"nama"`
+	Alamat      	string `json:"alamat"`
+	NamaKelurahan   []string `json:"nama_kelurahan"`
+}
+
 // RegistrasiRepository for repo
 type RegistrasiRepository interface {
 	GetAll() ([]Registrasi, error)

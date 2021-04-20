@@ -240,8 +240,11 @@ func (k *kelurahanRepo) GetAll() (res []models.Kelurahan, err error) {
 func (r *kelurahanRepo) Joining(ctx context.Context) (res []models.Joining, err error) {
 
 	rows, err := r.Reader.QueryContext(ctx, "" +
-		"SELECT registrasi.email as EMAIL," +
-		"\nkelurahan.nama," +
+		"SELECT registrasi.id," +
+		"\n registrasi.nama," +
+		"\n registrasi.email," +
+		"\n registrasi.alamat," +
+		"\n kelurahan.nama," +
 		"\n kelurahan.kodepos," +
 		"\n kecamatan.nama," +
 		"\n kabupaten_kota.nama," +
@@ -260,14 +263,16 @@ func (r *kelurahanRepo) Joining(ctx context.Context) (res []models.Joining, err 
 	for rows.Next() {
 		var r models.Joining
 		err = rows.Scan(
+			&r.ID,
+			&r.Name,
 			&r.Email,
+			&r.Address,
 			&r.Kelurahan,
 			&r.KodePos,
 			&r.Kecamatan,
 			&r.Kabupaten,
 			&r.Provinsi,
 		)
-
 		if err != nil {
 			logger.Error("Selection Failed: " + err.Error())
 		}
