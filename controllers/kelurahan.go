@@ -3,6 +3,7 @@ package controllers
 import (
 	"GoOrder/models"
 	httpUtils "GoOrder/utils/http"
+	"GoOrder/utils/passwords"
 	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
@@ -40,10 +41,50 @@ func NewKelurahanController(r *mux.Router, ks models.KelurahanService, rs models
 	r.HandleFunc("/deleteRegister", kelurahanController.DeleteRegister)
 	r.HandleFunc("/register/alter", kelurahanController.AlterRegister)
 	r.HandleFunc("/updateRegister", kelurahanController.UpdateRegister)
+	r.HandleFunc("/updateRegisterAuth", kelurahanController.AuthUpdate)
+	r.HandleFunc("/authUpdateProcessing", kelurahanController.AuthUpdateProcessing)
 }
 
 var templateHtml = template.Must(template.ParseGlob("templates/kelurahan/*"))
 
+type IDStruct struct {
+	ID string
+}
+
+func (c *kelurahanController) AuthUpdate(w http.ResponseWriter, r *http.Request) {
+	ID := r.FormValue("id")
+	id := IDStruct{ID}
+	_ = templateHtml.ExecuteTemplate(w, "AuthUpdate", id)
+}
+
+func (c kelurahanController) AuthUpdateProcessing(w http.ResponseWriter, r *http.Request) {
+	ID := r.FormValue("id")
+	password := r.FormValue("password")
+
+	register, _ := c.registrasiService.GetByID(ID)
+	status := passwords.ComparePasswords(register.Password, password)
+
+	if status != true {
+		_ = templateHtml.ExecuteTemplate(w, "UpdateRegister", nil)
+		return
+	}
+
+	kelurahanList, _ := c.kelurahanService.GetAll()
+	var namaKelurahan []string
+	for _, value := range kelurahanList{
+		namaKelurahan = append(namaKelurahan, value.Nama)
+	}
+	data := models.UpdateRegister{
+		RegistrasiID:  ID,
+		Email:         register.Email,
+		Password:      register.Password,
+		Nama:          register.Nama,
+		Alamat:        register.Alamat,
+		NamaKelurahan: namaKelurahan,
+	}
+
+	_ = templateHtml.ExecuteTemplate(w, "UpdateRegister", data)
+}
 
 func (c *kelurahanController) AlterRegister(w http.ResponseWriter, r *http.Request) {
 	var register models.Registrasi
