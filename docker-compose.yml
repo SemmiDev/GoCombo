@@ -15,7 +15,7 @@ services:
       - go_combo
 
   postgres:
-    image: postgres:latest
+    image: postgres:9.6.22-alpine
     container_name: go_combo_db
     environment:
       - POSTGRES_USER=${DB_USER}
