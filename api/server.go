@@ -19,7 +19,6 @@ func init() {
 }
 
 func Run() {
-
 	var err error
 	err = godotenv.Load()
 	if err != nil {

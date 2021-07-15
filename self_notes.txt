@@ -1,0 +1,1 @@
+docker exec -it 34b549e7d070 psql -d go_combo -U sammidev

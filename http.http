@@ -1,0 +1,49 @@
+### CREATE A USER
+POST localhost:8080/users
+Accept: application/json
+Content-Type: application/json
+
+{
+   "username": "izzah",
+   "full_name": "Rahmatul Izzah Annisa",
+   "email": "izzah@gmail.com",
+   "password": "izzah123",
+   "village_id": 1
+}
+
+### GET A USER
+GET localhost:8080/users/1
+Accept: application/json
+
+### GET ALL USERS
+GET localhost:8080/users
+Accept: application/json
+
+### LOGIN FOR GET TOKEN
+POST localhost:8080/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "izzah@gmail.com",
+  "password": "izzah123"
+}
+
+### DELETE A USER
+DELETE localhost:8080/users/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MjYzNjEwMDQsInVzZXJfaWQiOjJ9.AJbzl9xxpuaGytXzLCO3pTIUj4EHS7mC5E6PYOXUP6k
+Accept: application/json
+
+### UPDATE A USER
+PUT localhost:8080/users/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MjYzNjMwODcsInVzZXJfaWQiOjJ9.0z9gvGZwteb5cy_69PLBPiJZD35flrfWxjXcOao34Ds
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "sammidev2",
+  "password": "sammidev2",
+  "full_name": "Sammi Aldhi Yanto 2",
+  "email": "sammidev42@gmail.com",
+  "village_id": 1
+}

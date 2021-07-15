@@ -3,48 +3,47 @@ package seed
 import (
 	"github.com/SemmiDev/go-combo/api/models"
 	"github.com/SemmiDev/go-combo/api/utils/random"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"log"
 )
 
-var users = []models.User{
-	models.User{
-		Username: random.RandomUsername(),
-		FullName: random.RandomFullName(10),
-		Email:    random.RandomEmail(),
-		Password: random.RandomPassword(),
-	},
-	models.User{
-		Username: random.RandomUsername(),
-		FullName: random.RandomFullName(10),
-		Email:    random.RandomEmail(),
-		Password: random.RandomPassword(),
-	},
+var village = &models.Village{
+	Name:       "tinggam",
+	PostalCode: "11111",
+}
+
+var user = &models.User{
+	Username:  random.RandomUsername(),
+	FullName:  random.RandomFullName(10),
+	Email:     random.RandomEmail(),
+	Password:  random.RandomPassword(),
+	VillageID: 1,
 }
 
 func Load(db *gorm.DB) {
 
-	err := db.Debug().DropTableIfExists(&models.User{}).Error
+	err := db.Migrator().DropTable(&models.User{}, &models.Village{})
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}
 
-	err = db.Debug().AutoMigrate(&models.User{}).Error
+	err = user.BeforeSaveUser()
 	if err != nil {
-		log.Fatalf("cannot migrate table: %v", err)
+		log.Fatal(err.Error())
 	}
 
-	/*
-		err = db.Debug().Model(&models.Post{}).AddForeignKey("author_id", "users(id)", "cascade", "cascade").Error
-		if err != nil {
-			log.Fatalf("attaching foreign key error: %v", err)
-		}
-	*/
+	err = db.AutoMigrate(&models.User{}, &models.Village{})
+	if err != nil {
+		log.Fatalf("cannot seed users table: %v", err)
+	}
 
-	for i, _ := range users {
-		err = db.Debug().Model(&models.User{}).Create(&users[i]).Error
-		if err != nil {
-			log.Fatalf("cannot seed users table: %v", err)
-		}
+	err = db.Debug().Model(&models.Village{}).Create(village).Error
+	if err != nil {
+		log.Fatalf("cannot seed users table: %v", err)
+	}
+
+	err = db.Debug().Model(&models.User{}).Create(user).Error
+	if err != nil {
+		log.Fatalf("cannot seed users table: %v", err)
 	}
 }
